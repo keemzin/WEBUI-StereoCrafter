@@ -380,3 +380,8 @@ Your contributions help make StereoCrafter WEBUI better for everyone. We appreci
 
 ---
 
+If you’d like to support this project, please consider registering for RunPod using my referral link:
+https://runpod.io?ref=5r6ik1wp
+
+Your support helps me troubleshoot issues, test new features, and continue developing the project. Currently, I’m relying mostly on free credits for testing, so every bit of support helps keep the project alive. 🚀
+

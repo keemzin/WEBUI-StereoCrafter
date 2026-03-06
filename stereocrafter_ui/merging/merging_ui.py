@@ -153,7 +153,10 @@ class MergingWebUI:
         self.output_format = "Full SBS (Left-Right)"
         self.pad_to_16_9 = False
         self.enable_color_transfer = True
-        self.batch_chunk_size = 20
+        # Use VRAM-aware configuration for batch chunk size
+        from dependency.stereocrafter_util import get_vram_config
+        vram_config = get_vram_config()
+        self.batch_chunk_size = vram_config['batch_chunk_size']
         
         # Preview cache for faster updates
         self._frame_cache = {}  # Cache loaded frames

@@ -86,13 +86,16 @@ class DepthCrafterWebUI(BaseWebUI):
             value=-1.0,
             info="Desired frames per second for the output depth map. The input video will be sampled (frames possibly skipped or duplicated if necessary, though typically strided/downsampled) to approximate this FPS before processing. Set to -1 to use the original video's FPS. If the original FPS is very high, consider reducing it to save processing time."
         )
+        # Use VRAM-aware configuration for window size and overlap
+        from dependency.stereocrafter_util import get_vram_config
+        vram_config = get_vram_config()
         self.window_size = gr.Slider(
-            10, 200, value=110, step=1, 
+            10, 200, value=vram_config['window_size'], step=1, 
             label="Window Size",
             info="This value has a dual role depending on the 'Process as Segments' setting: Full Video Mode (Unchecked 'Process as Segments'): Defines the size of the processing window (number of frames) that slides over the video. The model processes the video in these chunks. Segment Mode (Checked 'Process as Segments'): Defines the number of output frames in each generated segment NPZ file. This is the target length of each chunk before overlap is considered for processing. Typically 60-110 frames. Larger values can improve temporal consistency but require more VRAM and processing time per window/segment. Must be larger than 'Overlap'."
         )
         self.overlap = gr.Slider(
-            0, 100, value=25, step=1, 
+            0, 100, value=vram_config['overlap'], step=1, 
             label="Overlap",
             info="This value also has a dual role: Full Video Mode (Unchecked 'Process as Segments'): Number of frames that consecutive processing windows overlap. This helps maintain temporal consistency across window boundaries. Segment Mode (Checked 'Process as Segments'): Number of frames that overlap between consecutive segments when they are defined and processed. For example, if Window Size is 100 and Overlap is 20, segment 1 might be frames 0-99, segment 2 might be frames 80-179 internally for processing, leading to an output overlap for smoother merging. Common values: 15-30 frames. Should be less than 'Window Size'."
         )
@@ -180,12 +183,12 @@ class DepthCrafterWebUI(BaseWebUI):
             info="If checked, the model will only attempt to load files from the local Hugging Face cache and will NOT attempt to connect to the Hugging Face Hub for verification or download. This can significantly speed up startup time if models are already cached locally. If a model is not found in the local cache, an error will occur."
         )
         self.target_height = gr.Slider(
-            100, 1080, value=384, step=1, 
+            100, 2160, value=1080, step=1, 
             label="Target Height",
             info="Set your vertical resolution, must be a multple of 64."
         )
         self.target_width = gr.Slider(
-            100, 1920, value=640, step=1, 
+            100, 3840, value=1920, step=1, 
             label="Target Width",
             info="Set your Horizonat resolution, must be a multple of 64."
         )

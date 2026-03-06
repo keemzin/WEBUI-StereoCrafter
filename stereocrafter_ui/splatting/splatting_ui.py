@@ -137,7 +137,7 @@ class SplatterWebUI:
 
         # Initialize all the parameters as instance variables
         self.input_source_clips = self.app_config.get("input_source_clips", "./input_source_clips")
-        self.input_depth_maps = self.app_config.get("input_depth_maps", "./input_depth_maps")
+        self.input_depth_maps = self.app_config.get("output_depthmaps", "./output_depthmaps")
         self.multi_map = False
         self.selected_depth_map = ""
         self.depth_map_subfolders = []  # List of valid subfolders
@@ -158,9 +158,20 @@ class SplatterWebUI:
         self.enable_global_norm = False 
         self.enable_full_res = True
         self.enable_low_res = True
-        self.pre_res_width = int(self.app_config.get("pre_res_width", "1920"))
-        self.pre_res_height = int(self.app_config.get("pre_res_height", "1080"))
+        # Initialize with default values, but these will be updated when a video is selected
+        self.pre_res_width = int(self.app_config.get("pre_res_width", "1280"))
+        self.pre_res_height = int(self.app_config.get("pre_res_height", "720"))
         self.low_res_batch_size = int(self.app_config.get("low_res_batch_size", defaults["BATCH_SIZE_LOW"]))
+        
+        # Initialize with default values, but these will be updated when a video is selected
+        self.pre_res_width = int(self.app_config.get("pre_res_width", "1280"))
+        self.pre_res_height = int(self.app_config.get("pre_res_height", "720"))
+        self.low_res_batch_size = int(self.app_config.get("low_res_batch_size", defaults["BATCH_SIZE_LOW"]))
+        
+        # Initialize with default values but will be updated when video is selected
+        self.current_video_width = 1280
+        self.current_video_height = 720
+        self._update_resolution_defaults_based_on_input = True
         self.zero_disparity_anchor = float(self.app_config.get("convergence_point", defaults["CONV_POINT"]))
         self.output_crf = int(self.app_config.get("output_crf", defaults["CRF_OUTPUT"]))
         self.output_crf_full = int(self.app_config.get("output_crf_full", defaults["CRF_OUTPUT"]))

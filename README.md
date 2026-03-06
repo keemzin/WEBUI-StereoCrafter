@@ -2,7 +2,7 @@
 
 ## 🎯 About This Project
 
-This is a **web-based UI fork** of the original [StereoCrafter](https://github.com/TencentARC/StereoCrafter) project by Tencent ARC Lab and by [Enoky](https://github.com/enoky/StereoCrafter) for the GUI implementation. This version is tested with a minimum RTX 6000 Ada ( Lovelace architecture ) and 48GB VRAM.
+This is a **web-based UI fork** of the original [StereoCrafter](https://github.com/TencentARC/StereoCrafter) project by Tencent ARC Lab and by [Enoky](https://github.com/enoky/StereoCrafter) for the GUI implementation. 
 
 ### Why a Web UI?
 
@@ -45,9 +45,13 @@ This codebase is:
 
 We welcome optimizations, bug fixes, and feature improvements. This is a learning project for everyone involved!
 
----
+Change Log:
+1) GPU and VRAM size will be automatically identified at startup. This will help with code optimization.
+2) Code is optimized for low ( 12GB ), mid ( 32 GB ) and high (48 GB ) VRAM setups. After identifying GPU VRAM, these values will be automatically channged for optimization: Chunk size, window size, frame overlap, frame chunk, bathc chunk size, and processing chunk size.
+3) 4K video can now be processed. But it will take a long time even with an RTX 5090 32GB VRAM. Only use with GPUs with 48 VRAM or higher.
 
-# Quick Runpod deploy
+
+----
 ## 🚀 Runpod Setup Guide
 
 ### 1. Select Pod Template
@@ -72,14 +76,19 @@ Under **Pod Template**, click **Edit** and enter the following:
 
 ### 4. Environment Variables
 *   **Key:** `HF_TOKEN`
-*   **Value:** `your huggingface read token`
+*   **Value:** `PASTE your huggingface read token HERE`
 
 ### 5. Deploy
 *   Click **Set Overrides**
 *   Select **Deploy On-Demand**
 
-## 🚀 Local Setup 
+---
+
 Thank you for your interest in contributing! This guide will help you set up the project locally, make changes, and submit your contributions.
+
+## 🚀 Local Setup
+Note: This StereoCrafter fork is meant to be run on cloud-based GPUs. Scroll down near the end of the document on for how to run it.
+
 ### 📋 Prerequisites
 
 Before you begin, ensure you have:
@@ -152,7 +161,7 @@ cp ../WEBUI-StereoCrafter/webui.py ./
 cp ../WEBUI-StereoCrafter/requirements.txt ./
 ```
 
-**Windows users:** use File Explorer to copy/repalce everything the folders or can use xcopy:
+**Windows users:** Use `xcopy` or File Explorer to copy the folders:
 ```cmd
 xcopy /E /I ..\WEBUI-StereoCrafter\gui .\gui
 xcopy /E /I ..\WEBUI-StereoCrafter\stereocrafter_ui .\stereocrafter_ui
@@ -248,7 +257,7 @@ Only modify files in these locations (per `global-rules.md`):
 
 ## 📤 Submitting Your Contribution
 
-### Step 1: Clone/modify/Commit Your Changes
+### Step 1: Commit Your Changes
 
 ```bash
 # Check what files you've modified
@@ -276,6 +285,8 @@ Update file manager with pipeline folder shortcuts
 ```
 
 ### Step 2: Push to Your Fork
+
+First, fork the repository on GitHub, then:
 
 ```bash
 # Push your branch to your fork
@@ -378,10 +389,9 @@ pip install -r requirements.txt
 
 Your contributions help make StereoCrafter WEBUI better for everyone. We appreciate your time and effort!
 
----
-
 If you’d like to support this project, please consider registering for RunPod using my referral link:
-https://runpod.io?ref=5r6ik1wp
+https://runpod.io?ref=5r6ik1wp ( keemzin )
+https://runpod.io?ref=seyfcia9 ( writesimply.bcc )
 
 Your support helps me troubleshoot issues, test new features, and continue developing the project. Currently, I’m relying mostly on free credits for testing, so every bit of support helps keep the project alive. 🚀
 

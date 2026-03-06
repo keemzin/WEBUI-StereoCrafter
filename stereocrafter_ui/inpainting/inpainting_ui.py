@@ -180,11 +180,13 @@ def spatial_tiled_process(
 ) -> torch.Tensor:
     """
     Splits frames into tiles, processes them with process_func, then blends result.
+    Enhanced with better memory management for lower VRAM cards like RTX 3060.
     """
     height = cond_frames.shape[2]
     width = cond_frames.shape[3]
 
-    tile_overlap = (128, 128)
+    # Reduce tile overlap for better memory management on lower VRAM cards
+    tile_overlap = (64, 64)  # Reduced from 128 to 64
     overlap_y, overlap_x = tile_overlap
 
     # Calculate tile sizes and strides
@@ -234,6 +236,11 @@ def spatial_tiled_process(
                 w_latent = w_tile // 8
                 tile_output = tile_output_padded[:, :, :h_latent, :w_latent]
 
+            # Clean up intermediate tensors to save memory
+            del cond_tile_proc, mask_tile_proc, tile_output_padded
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+
             row_tiles.append(tile_output)
         cols.append(row_tiles)
 
@@ -263,6 +270,10 @@ def spatial_tiled_process(
         final_rows.append(torch.cat(row_tiles, dim=3))
 
     x = torch.cat(final_rows, dim=2)
+    # Clean up intermediate lists to save memory
+    del cols, blended_rows, final_rows
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
     return x
 
 # ==================== END HELPER FUNCTIONS ====================
@@ -418,8 +429,11 @@ class InpaintingWebUI:
                             
                             ⚠️ **Warning**: Values above 14 may cause OOM (Out of Memory) errors on GPUs with less than 24GB VRAM!
                             """)
+                            # Use VRAM-aware configuration for decode chunk size
+                            from dependency.stereocrafter_util import get_vram_config
+                            vram_config = get_vram_config()
                             decode_chunk_size = gr.Slider(
-                                minimum=1, maximum=23, value=int(self.app_config.get("decode_chunk_size", 8)),
+                                minimum=1, maximum=23, value=int(self.app_config.get("decode_chunk_size", vram_config['decode_chunk_size'])),
                                 step=1, label="Decode Chunk Size",
                                 info="Frames decoded at once. Higher = faster + more VRAM. Safe: 8-12, Max: 23. Default: 8"
                             )

@@ -6,6 +6,7 @@ This is the main entry point that orchestrates all UI components.
 """
 
 import gradio as gr
+import torch
 import dependency.stereocrafter_util as sc_util
 from dependency.stereocrafter_util import check_cuda_availability
 
@@ -15,6 +16,16 @@ from stereocrafter_ui.splatting import SplatterWebUI
 from stereocrafter_ui.inpainting import InpaintingWebUI
 from stereocrafter_ui.merging import MergingWebUI
 from stereocrafter_ui.file_manager import FileManagerUI
+
+def get_gpu_info():
+    """Get GPU and VRAM information"""
+    if torch.cuda.is_available():
+        gpu_name = torch.cuda.get_device_name(0)
+        vram_total = torch.cuda.get_device_properties(0).total_memory / (1024**3)  # Convert to GB
+        vram_used = torch.cuda.memory_reserved(0) / (1024**3)  # Currently reserved in GB
+        return f"GPU: {gpu_name} | Total VRAM: {vram_total:.1f} GB | Reserved VRAM: {vram_used:.1f} GB"
+    else:
+        return "GPU: Not available (using CPU) | VRAM: N/A"
 
 
 class CombinedWebUI:
@@ -34,9 +45,13 @@ class CombinedWebUI:
     def create_interface(self):
         """Creates the combined Gradio interface with all tabs"""
         with gr.Blocks(title="StereoCrafter Combined WebUI") as interface:
+
             gr.Markdown("# StereoCrafter Combined WebUI")
             gr.Markdown("A unified interface for depth estimation, splatting, inpainting, and merging operations.")
-            
+            # Display GPU and VRAM info below the title
+            gpu_info = get_gpu_info()
+            gr.Markdown(f"## {gpu_info}")
+
             with gr.Tab("DepthCrafter"):
                 self.depthcrafter_gui.create_interface()
                 

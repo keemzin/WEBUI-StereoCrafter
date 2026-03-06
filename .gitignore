@@ -104,3 +104,42 @@ nul
 venv3.12/
 input_source_clips/T405p_V1-0078.mov
 output_depthmaps/T405p_V1-0078_depth.mp4
+benchmark/eval/eval.py
+_RUN_Splatting_GUI.bat
+_RUN_DepthCrafter_GUI_Seg.bat
+_RUN_Inpainting_GUI.bat
+_RUN_Merging_GUI.bat
+_update.bat
+assets/camel_anaglyph.jpg
+assets/camel_sbs.jpg
+assets/camel_splatting_results.jpg
+assets/demo.gif
+benchmark/csv/meta_bonn.csv
+benchmark/csv/meta_kitti_val.csv
+benchmark/csv/meta_nyu_test.csv
+benchmark/csv/meta_scannet_test.csv
+benchmark/csv/meta_sintel.csv
+benchmark/dataset_extract/dataset_extract_bonn.py
+benchmark/dataset_extract/dataset_extract_kitti.py
+benchmark/dataset_extract/dataset_extract_nyu.py
+benchmark/dataset_extract/dataset_extract_scannet.py
+benchmark/dataset_extract/dataset_extract_sintel.py
+benchmark/eval/eval.sh
+benchmark/eval/metric.py
+benchmark/infer/infer_batch.py
+benchmark/infer/infer.sh
+tools/image.png
+tools/npz_to_exr.py
+visualization/visualization_pcd.py
+dependency/forward_warp_pytorch/forward_warp_max_motion_pytorch.py
+dependency/forward_warp_pytorch/forward_warp_pytorch.py
+dependency/forward_warp_pytorch/forward_warp_rescaled.py
+dependency/forward_warp_pytorch/forward_warp.py
+scripts/Davinci Resolve/Comp/Control Data Exporter.md
+scripts/Davinci Resolve/Comp/Control Data Exporter.py
+scripts/Davinci Resolve/Comp/Markers to Keyframes.md
+scripts/Davinci Resolve/Comp/Markers to Keyframes.py
+scripts/Davinci Resolve/Edit/Add Markers.md
+scripts/Davinci Resolve/Edit/Add Markers.py
+scripts/Davinci Resolve/Edit/Export_Markers_To_SRT.md
+source_video/Incept_V2-0080.mp4
